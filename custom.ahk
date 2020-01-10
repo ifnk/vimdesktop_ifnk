@@ -989,10 +989,17 @@ Rctrl & r:: ;自动完成代码
 Return
 
 
-`; & t:: ;由于visual studio 会自动补全{} 导致 多加一个} ，所以 改下 只弄一个 { 防止补全
+
+
+`; & e::
+sendraw (
+return
+`; & r::
+sendraw [
+return
+`; & t::
 sendraw {
 return
-
 
 
 #If
