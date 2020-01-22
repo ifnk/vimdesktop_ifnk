@@ -91,6 +91,10 @@ Return
 
 
 
+;LCtrl 相关快捷键临时{{{1
+;<^h::SendInput #5
+;<^l::SendInput #1
+
 ;tab相关快捷键{{{1
  ;======================================================
 
@@ -116,13 +120,14 @@ Tab & e::Backspace
 ;    return
 
 
+
 ;窗口恢复原来的小或者最大化
 ;Tab & m:: GoSub,Sub_MaxRestore
 
-Tab & i:: SendInput,{End}
+Tab & i:: SendInput,#1
 
 
-Tab & u:: SendInput,{Home}
+Tab & u:: SendInput,#5
 
 
 Tab & j:: 
@@ -357,14 +362,6 @@ return
 `; & y::sendinput +{F6}
 `; & Space::sendinput {``}
 
-`; & m::
-        PostMessage, 0x50, 0, 0x4090409, , A ;切换为英文0x4090409=67699721
-        sendinput {/}
-return
-
-;`; & Tab::send +^{Tab}
-
-return
 `; & esc::sendinput {;}
 `; & e::
 sendraw ()
@@ -378,6 +375,13 @@ return
 sendraw {}
 sendinput {left}
 return
+
+`; & m::
+        PostMessage, 0x50, 0, 0x4090409, , A ;切换为英文0x4090409=67699721
+        sendinput {/}
+return
+
+
 
 
 
@@ -417,6 +421,9 @@ return
 
 ;Backspace 相关 快捷键{{{1
 
+^+Backspace::sendinput,^+{Backspace}
+!Backspace::sendinput,!{Backspace}
++Backspace::sendinput,+{Backspace}
 ^Backspace::sendinput,^[
 Backspace::Sendinput,{Backspace}
 
@@ -428,9 +435,9 @@ Backspace & n:: SendInput,+{Home}{Backspace}
 Backspace & i:: SendInput,+{End}{Backspace}
 Backspace & s:: SendInput,+{End}{Backspace}
 ;删除到下一词(英语有用中文没用)
-Backspace & e:: SendInput,^+{right}{Backspace}
+Backspace & e:: SendInput,^{Delete}
 ;删除到上一词(英语有用中文没用)
-Backspace & b:: SendInput,^+{left}{Backspace}
+Backspace & b:: SendInput,^{Backspace}
 
 ;全选粘贴
 Backspace & v:: SendInput,^{Home}^+{End}^v
@@ -522,22 +529,33 @@ return
 ;获取当前鼠标下的像素颜色 
 
 
-;切换到 phpstorm
-
-RCtrl & a::
-sendinput #1
-sendinput {Blind}{RCtrl up}
-sendinput {Blind}{LWin up}
-sendinput {Blind}{RWin up}
-PostMessage, 0x50, 0, 0x4090409, , A ;切换为英文0x4090409=67699721 
+;切换到 webStorm
+RCtrl & a::		
+        Send, #1
+        sendinput {Blind}{RCtrl up}
+        sendinput {Blind}{LWin up}
+        sendinput {Blind}{RWin up}
+        PostMessage, 0x50, 0, 0x4090409, , A ;切换为英文0x4090409=67699721 
 return
-;切换到 excel
-RCtrl & e::
-sendinput #5
-sendinput {Blind}{RCtrl up}
-sendinput {Blind}{LWin up}
-sendinput {Blind}{RWin up}
-PostMessage, 0x50, 0, 0x4090409, , A ;切换为英文0x4090409=67699721 
+
+;切换到 visual studio
+RCtrl & e::		
+        Sendinput, #5
+        sendinput {Blind}{RCtrl up}
+        sendinput {Blind}{LWin up}
+        sendinput {Blind}{RWin up}
+        PostMessage, 0x50, 0, 0x4090409, , A ;切换为英文0x4090409=67699721 
+return
+
+;切换到chrome
+RCtrl & s::		
+        Sendinput,#2
+        sendinput {Blind}{RCtrl up}
+        sendinput {Blind}{LWin up}
+        sendinput {Blind}{RWin up}
+        PostMessage, 0x50, 0, 0x4090409, , A ;切换为英文0x4090409=67699721 
+return
+
 
 
 return
@@ -591,14 +609,6 @@ return
 ;============================================================================================================
 
 ;============================================================================================================
-;切换到 source tree
-RCtrl & s::
-send  #2
-PostMessage, 0x50, 0, 0x4090409, , A ;切换为英文0x4090409=67699721 
-sendinput {Blind}{RCtrl up}
-sendinput {Blind}{LWin up}
-sendinput {Blind}{RWin up}
-return
 ;============================================================================================================
 
 
@@ -646,13 +656,11 @@ return
 RCtrl & h::
     sendinput ^+{tab}
     sendinput {Blind}{RCtrl up}
-    sendinput {Blind}{shift up}
 return
 
 RCtrl & l::
     sendinput ^{tab}
     sendinput {Blind}{RCtrl up}
-    sendinput {Blind}{shift up}
 return
 
 
@@ -832,7 +840,7 @@ return
 
 ;打开chrome 的 扩展面板
 RCtrl & f::
-send !ex
+send !ele
 send {alt up}
 send {Blind}{RCtrl up}
 return
@@ -945,8 +953,8 @@ return
 
 
 RCtrl & f:: ;停止运行 stop
-    sendinput ^n
-    sendinput {Blind} {RCtrl up}
+    sendinput ^+n
+    sendinput {Blind}{RCtrl up}
 Return
 
 RCtrl & o:: ;停止运行 stop
@@ -1067,10 +1075,10 @@ return
 ;    return
 
 LCtrl & `;::   ;phpstorm快速单行注释
+PostMessage, 0x50, 0, 0x4090409, , A ;切换为英文0x4090409=67699721 
 ;sendinput {Esc}A<{!}---->{left}{left}{left}	 ;注释代码 
 sendinput {Esc}A{Space}//{Space} ;注释代码 
 ;PostMessage, 0x50, , 0x8040804,, A ;切换到中文输入法
-PostMessage, 0x50, 0, 0x4090409, , A ;切换为英文0x4090409=67699721 
 send {Blind}{LCtrl up}
 return
 
