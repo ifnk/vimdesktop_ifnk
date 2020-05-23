@@ -1,4 +1,10 @@
-﻿; win 相关快捷键 {{{1
+; LAlt 相关快捷键 {{{1
+LAlt & Enter::
+  sendinput,!{Enter}
+  sendinput {Blind}{LAlt up}
+  sendinput {Blind}{RAlt up}
+Return  
+; win 相关快捷键 {{{1
 ;======================================================
 ;#if Not WinGet_A_MinMax() ;当前窗口既不处于最小化状态也不处于最大化状态时以下热键才可用.
 ;#k:: ;向上
@@ -131,23 +137,23 @@ Tab & u:: SendInput,#5
 
 
 Tab & j:: 
-        SendInput,#{down}
-        SendInput,{Blind}{Win up}
+  SendInput,#{down}
+  SendInput,{Blind}{Win Up}
 return
 
 
 Tab & k::
-        SendInput,#{up}
-        SendInput,{Blind}{Win up}
+  SendInput,#{up}
+  SendInput,{Blind}{Win Up}
 return
 
 Tab & l::
-        sendinput #{right}
-        SendInput,{Blind}{Win up}
+  Sendinput #{right}
+  SendInput,{Blind}{Win Up}
 return
 Tab & h::
-        sendinput #{left}
-        SendInput,{Blind}{Win up}
+  sendinput #{left}
+  SendInput,{Blind}{Win Up}
 return
 
 
@@ -180,8 +186,6 @@ Escape & e:: SendInput,{Blind}{PgDn}
 Escape & q:: SendInput,{Blind}{PgUp}
 
 
-Esc & g::^w
-Esc & r::^r
 Esc & t::
     sendinput, ^t
     PostMessage, 0x50, 0, 0x4090409, , A ;切换为英文0x4090409=67699721
@@ -358,7 +362,10 @@ return
 `; & j::sendinput {#}
 `; & i::sendinput {~}
 `; & h::sendinput {&}
-`; & b::Sendinput {`%}
+`; & b::
+  Sendinput {`%}
+  sendinput {Blind}{Shift Up}
+return
 `; & y::sendinput +{F6}
 `; & Space::sendinput {``}
 
@@ -420,32 +427,35 @@ return
 
 
 ;Backspace 相关 快捷键{{{1
-
 ^+Backspace::sendinput,^+{Backspace}
 !Backspace::sendinput,!{Backspace}
 +Backspace::sendinput,+{Backspace}
 ^Backspace::sendinput,^[
 Backspace::Sendinput,{Backspace}
-
-;删除到行首
-
 Backspace & u:: SendInput,+{Home}{Backspace}
 Backspace & n:: SendInput,+{Home}{Backspace}
-;删除到行尾
 Backspace & i:: SendInput,+{End}{Backspace}
 Backspace & s:: SendInput,+{End}{Backspace}
-;删除到下一词(英语有用中文没用)
 Backspace & e:: SendInput,^{Delete}
-;删除到上一词(英语有用中文没用)
 Backspace & b:: SendInput,^{Backspace}
-
-;全选粘贴
 Backspace & v:: SendInput,^{Home}^+{End}^v
-
-;删除一行
 Backspace & d::SendInput,{Home}+{End}{Delete}
-;删除所有
 Backspace & a::SendInput,^{Home}^+{End}{Delete}
+;限定 window terminal{{{2
+#IfWinActive  ahk_exe WindowsTerminal.exe	;tc  相关快捷键
+;Backspace & b:: SendInput !b!d 
+;Backspace & e:: SendInput !d 
+;Backspace & n:: SendInput ^u 
+;Backspace & s:: SendInput ^k 
+;Enter & s:: SendInput ^e 
+;Enter & n:: SendInput ^a 
+;Enter & e:: SendInput !f 
+;Enter & b:: SendInput !b 
+Escape & c::SendInput,^+c
+RCtrl & x::SendInput,+^w
+
+#IfWinActive
+
 
 
 
@@ -472,33 +482,26 @@ Enter & h::MouseMove, -1, 0, 0, R
 Enter & l::MouseMove, 1, 0, 0, R
 
 ;RAlt 相关 快捷键{{{1
-;跳到上一词
->!b:: SendInput,^+{left}
->!e:: SendInput,^+{right}
 
-;跳到行首 行尾
-
-
-
-
-;跳到下一词
-;搜索选中的文本
->!q::
-        sendinput,^c
-        GoSub,Sub_SearchSelectTxt
-        return
-Sub_SearchSelectTxt:
-	clip:=
-	clip:=clipboard
-	If RegExMatch(clip, "^\d{6}$"){
-		Out := gv_url_tdx_f10 . clip . gv_url_html
-		run,%Out%
-	}
-	else{
-		run,http://www.baidu.com/s?ie=utf-8&wd=%clip%
-	}
+RAlt & b::		
+  SendInput,^+{left}
+  sendinput {Blind}{RAlt up}
 return
 
+RAlt & e::		
+  SendInput,^+{right}
+  sendinput {Blind}{RAlt up}
+return
+
+RAlt & s::		
+  SendInput,+{End}
+  sendinput {Blind}{RAlt up}
+return
+
+RAlt & q::		
+  SendInput,+{Home}
+  sendinput {Blind}{RAlt up}
+return
 
 ;右Ctrl相关的快捷键{{{1
 ;=======================================================
@@ -666,49 +669,47 @@ return
 
 
 RCtrl & 1::
-    send {f1}
+    sendinput {f1}
+    sendinput {Blind}{RCtrl up}
 return
 
 RCtrl & 2::
-    send {f2}
+    SendInput,   {f2}
+    sendinput {Blind}{RCtrl up}
 return
 
-RCtrl & 3::send {f3}
-
-
-send {Blind}{RCtrl up}
+RCtrl & 3::
+    SendInput {f3}
+    SendInput {Blind}{RCtrl up}
 return
-RCtrl & 4::send {f4}
-
-send {Blind}{RCtrl up}
-
+RCtrl & 4::
+    SendInput {f4}
+    send {Blind}{RCtrl up}
 return
-RCtrl & 5::send {f5}
-
-
-send {Blind}{RCtrl up}
+RCtrl & 5::
+    SendInput {f5}
+    send {Blind}{RCtrl up}
 return
-RCtrl & 6::send {f6}
-
-send {Blind}{RCtrl up}
-
+RCtrl & 6::
+    SendInput {f6}
+    SendInput {Blind}{RCtrl up}
 return
-RCtrl & 7::send {f7}
-
-
-send {Blind}{RCtrl up}
+RCtrl & 7::
+    SendInput {f7}
+    SendInput {Blind}{RCtrl up}
 return
-RCtrl & 8::send {f8}
-
-
-send {Blind}{RCtrl up}
+RCtrl & 8::
+    SendInput {f8}
+    SendInput {Blind}{RCtrl up}
 return
-RCtrl & 9::send {f9}
-send {Blind}{RCtrl up}
+RCtrl & 9::
+    SendInput {f9}
+    SendInput {Blind}{RCtrl up}
 return
 
-RCtrl & 0::send {f10}
-send {Blind}{RCtrl up}
+RCtrl & 0::
+    SendInput {f10}
+    SendInput {Blind}{RCtrl up}
 return
 RCtrl & -::send {f11}
 send {Blind}{RCtrl up}
@@ -754,6 +755,19 @@ RCtrl & r::  ;发送send 按钮
 ControlFocus,Chrome_RenderWidgetHostHWND1 ;定位 到这个 大框
 ControlClick,Chrome_RenderWidgetHostHWND1,, Chrome Legacy Window,,, NA x1743 y173 ; 点击
 send {Blind}{RCtrl up}
+
+return
+
+#if
+
+
+
+;限定 VNote{{{1
+#IfWinActive  ahk_exe VNote.exe	;VNote  相关快捷键
+RCtrl & x::  ;发送send 按钮
+
+sendinput ^ex
+sendinput {Blind}{RCtrl up}
 
 return
 
@@ -875,9 +889,6 @@ return
 
 #if
 
-
-
-
 ;限定 phpstorm 目录树{{{1
 #if, winactive("Project") 
 
@@ -925,9 +936,43 @@ o::send {appskey}
 
 #If
 
+;限定 rider database 数据库{{{1
+#IfWinActive Database ahk_class  SunAwtDialog 
+
+l::send {right}
+h::send {left}
+k::send {up}
+j::send {down}
+c::send ^+{F10}
+o::send {appskey}
+^r::sendinput ^{F5}
+
+#If
+
+;限定 rider terminal 命令行{{{1
+#IfWinActive Terminal ahk_class  SunAwtDialog 
+
+Esc & t::sendinput,^+t
+RCtrl & x:: 
+        sendinput,^+w ; 关闭标签
+        sendinput,{Blind}{RCtrl up}
+return
+
+#If
+
 
 ;限定 visual studio {{{1
 #IfWinActive  ahk_exe devenv.exe	;visual studio 相关快捷键
+
+
+
+LCtrl & `;::   ;phpstorm快速单行注释
+PostMessage, 0x50, 0, 0x4090409, , A ;切换为英文0x4090409=67699721 
+;sendinput {Esc}A<{!}---->{left}{left}{left}	 ;注释代码 
+sendinput {Esc}A{Space}//{Space} ;注释代码 
+;PostMessage, 0x50, , 0x8040804,, A ;切换到中文输入法
+send {Blind}{LCtrl up}
+return
 
 ; esc 以后 将 输入法切换 成 英文 的
 Esc::
@@ -940,7 +985,7 @@ send {F2} ;关闭多余的选项卡
 return
 ;关闭多余的选项卡
 `; & tab::
-send ^+!=
+send +{Esc}
 return
 
 ;RCtrl & b::
@@ -953,8 +998,8 @@ return
 
 
 RCtrl & f:: ;停止运行 stop
-    sendinput ^+n
-    sendinput {Blind}{RCtrl up}
+    sendinput ^,f{space}
+    sendinput {Blind}{RCtrl Up}
 Return
 
 RCtrl & o:: ;停止运行 stop
@@ -966,14 +1011,13 @@ RCtrl & m:: ;错误列表
     send ^\e
     sendinput {Blind}{RCtrl Up}
 Return
-RCtrl & d:: ;调试 
-    send {F10}
+RCtrl & b:: ;调试 
+    send ^{F12}
     sendinput {Blind}{RCtrl Up}
 Return
 
 RCtrl & Space:: ;显示该文件的所有方法 
-    send ^{F12}
-    sendinput {Blind}{RCtrl Up}
+    send ^,m{space}
 Return
 RCtrl & i:: ;运行 不调试 
     send {F5}
@@ -982,11 +1026,11 @@ Return
 
 ;上一个 选项卡 
 RCtrl & h::
-        sendinput ^{PgUp}
+        sendinput ^!{PgUp}
     sendinput {Blind}{RCtrl Up}
     return
  ;下一个 选项卡 
-RCtrl & l:: sendinput ^{PgDn}
+RCtrl & l:: sendinput ^!{PgDn}
     sendinput {Blind}{RCtrl Up}
     return
 
@@ -995,40 +1039,48 @@ Rctrl & r:: ;自动完成代码
     send ^\
     sendinput {Blind}{RCtrl Up}
 Return
-
-
-
-
-`; & e::
-sendraw (
-return
-`; & r::
-sendraw [
-return
-`; & t::
-sendraw {
-return
-
-
 #If
 
 ;限定 vscode{{{1
 #IfWinActive  ahk_exe Code.exe	;vscode  相关快捷键
-RCtrl & l::send {lalt down}{right}{lalt up}
-send {blind}{LAlt Up}
 
+RCtrl & f::
+    sendinput {Blind}^+n
+    sendinput {blind}{RCtrl Up}
 return
-RCtrl & h::send {lalt down}{left}{lalt up}
-send {blind}{LAlt Up}
-
+RCtrl & l::
+    sendinput !{Right}
+    sendinput {blind}{AltUp}
+    sendinput {blind}{RCtrl Up}
 return
-RCtrl & space::send ^{F12}
-
-send {blind}{RCtrl Up}
-
-
-
+RCtrl & h::
+    sendinput {Blind}!{Left}
+    sendinput {blind}{AltUp}
+    sendinput {blind}{RCtrl Up}
 return
+RCtrl & i::
+    sendinput {Blind}{f5}
+    sendinput {blind}{RCtrl Up}
+return
+RCtrl & space::
+    SendInput {Blind}^{F12}
+    SendInput {blind}{RCtrl Up}
+Return
+
+`; & esc::
+    SendInput {Blind}+{F6}
+return
+
+`; & Tab::
+    SendInput {Blind}^k^{Up}
+return
+
+Esc::
+    sendinput,{Blind}{Esc}
+    PostMessage, 0x50, 0, 0x4090409, , A ;切换为英文0x4090409=67699721
+return
+
+
 
 #If
 
@@ -1091,8 +1143,10 @@ return
 ;寻找任意文件  
 
 RCtrl & f::
-        sendinput,^+n 
-        sendinput,{Blind}{RCtrl up}
+    sendinput,^+n 
+    sendinput,{Blind}{RCtrl up}
+    sendinput,{Blind}{Win Up}
+    sendinput,{Blind}{Shift up}
 return
 
 

@@ -41,9 +41,18 @@ CountAndShow(){
 					
 		if(this.theString!=""){
 			ToolTip,% this.theString
-			;将你 卡住的键 up 弹出去，想要弹那个你 发送那个，我常卡的是 RCtrl 和 RShift  所以我就发送两个……
-			;SendInput {LAlt Up}{RAlt Up}{LCtrl Up}{LShift Up}{RShift Up}{LWin Up}{RWin Up}
-			SendInput {RCtrl Up}{RShift Up}
+			KeyWait RCtrl
+			KeyWait LCtrl
+			KeyWait LShift
+			KeyWait RShift
+			KeyWait RAlt
+			KeyWait LAlt
+			KeyWait RWin
+			KeyWait LWin
+			#InstallKeybdHook
+			#InstallMouseHook
+			SendInput {LAlt Up}{RAlt Up}{LCtrl Up}{LShift Up}{RShift Up}{LWin Up}{RWin Up}
+			;SendInput {RCtrl Up}{RShift Up}
 		}		
 		else if(this.theString=""){
 			ToolTip
