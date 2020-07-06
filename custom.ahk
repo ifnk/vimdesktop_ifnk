@@ -29,39 +29,66 @@ Return
 ;	return %MinOrMax%
 ;}
 
-#x::
-    sendinput ^F4
-return
-
+;#x::
+;    sendinput ^F4
+;return
+;
 #c::Winclose,A
-;#c::WinClose,A
-;#m::WinMaximize,A
+<#o::SendInput,{Blind}^#{F4}
+>#d::SendInput,{Blind}^#d
+;;#c::WinClose,A
+;;#m::WinMaximize,A
 #n::WinMinimize,A
+;
+;
+;#k:: WindowPadMove("0, -1, 1.0, 0.5")
+;
+;#j:: WindowPadMove("0, +1, 1.0, 0.5")
 
+#j::sendinput,{Blind}#{down}
+#k::sendinput,{Blind}#{up}
+#+l::SendInput, {Blind}#+{Right}
+#+h::SendInput, {Blind}#+{Left}
+;将焦点聚焦到左边的窗口
+#y::
+    MouseMove, 480, 270,0
+    MouseGetPos,,, hwnd 
+    WinActivate, ahk_id %hwnd%
+return 
+;将焦点聚焦到左边的窗口
+#h::
+    MouseMove, 480, 540,0
+    MouseGetPos,,, hwnd 
+    WinActivate, ahk_id %hwnd%
+return 
 
-#k:: WindowPadMove("0, -1, 1.0, 0.5")
+;将焦点聚焦到右边的窗口
+#l::
+    MouseMove, 1440, 540,0
+    MouseGetPos,,, hwnd 
+    WinActivate, ahk_id %hwnd%
+return 
 
-#j:: WindowPadMove("0, +1, 1.0, 0.5")
-
-
-
-;#j::#down
-;#k::#up
-;#h::#left
-
-;#l::#right
+#u::
+    MouseMove, 1440, 270,0
+    MouseGetPos,,, hwnd 
+    WinActivate, ahk_id %hwnd%
+return 
+#b::
+    MouseMove, 480, 870,0
+    MouseGetPos,,, hwnd 
+    WinActivate, ahk_id %hwnd%
+return 
+;#n::
+;    MouseMove, 1440, 870,0
+;    MouseGetPos,,, hwnd 
+;    WinActivate, ahk_id %hwnd%
+;return 
 
 ;#k:: WindowPadMove("0, -1, 1.0, 0.5")
 
 ;#j:: WindowPadMove("0, +1, 1.0, 0.5")
 
-;#p:: ; 达到指定文件夹 并且 定位 到 第一 个文件  （不包含文件夹）
-;
-;run,"C:\TotalCMD64\Totalcmd64.exe" /O /T /S L="C:\Users\Administrator\Downloads\"
-;PostMessage 1075, 2050, 0, ,  ahk_class TTOTAL_CMD   cm_GoToFirstFile=2050 ;Place cursor on first file in list
-;sleep,200
-;
-;return
 
 ;打开我的下载 文件夹
 
@@ -74,26 +101,26 @@ WinShow ahk_class TTOTAL_CMD
 PostMessage 1075, 2050, 0, ,  ahk_class TTOTAL_CMD   ;cm_GoToFirstFile=2050;Place cursor on first file in list
 Return
 
-;<cm_GoToFirstFile>   这个命令 就 是tc 里面 查找 第一 个文件 （不包含文件夹）
-
-#0::   ;复制文件路径（带文件）
-send, ^c
-clipwait
-clipboard = %clipboard% 
-return
-
-#m:: ; 最大化或者 还原窗口大小
-Switch := ((Switch = 1) ? 0 : 1)
-If Switch
-WinMaximize, A
-Else
-WinRestore,A
-Return
-
-
-
-;窗口置顶
-#f12::Winset, Alwaysontop, toggle, A
+;;<cm_GoToFirstFile>   这个命令 就 是tc 里面 查找 第一 个文件 （不包含文件夹）
+;
+;#0::   ;复制文件路径（带文件）
+;send, ^c
+;clipwait
+;clipboard = %clipboard% 
+;return
+;
+;#m:: ; 最大化或者 还原窗口大小
+;Switch := ((Switch = 1) ? 0 : 1)
+;If Switch
+;WinMaximize, A
+;Else
+;WinRestore,A
+;Return
+;
+;
+;
+;;窗口置顶
+;#f12::Winset, Alwaysontop, toggle, A
 
 
 
@@ -108,6 +135,7 @@ Return
 Tab::send {tab down}
 Tab up::send,{tab up}
 
+#Tab::#Tab
 Lalt & tab::Alttab
 LCtrl & tab::^tab
 Tab & Space::Enter
@@ -130,31 +158,46 @@ Tab & e::Backspace
 ;窗口恢复原来的小或者最大化
 ;Tab & m:: GoSub,Sub_MaxRestore
 
-Tab & i:: SendInput,#1
+Tab & i:: SendInput,{Blind}#1
 
+;; 这个代码 用了 vimd 的东西导致不能独立运行 
+;Tab & y::
+;    WindowPadMove("-1,  -1,  0.5, 0.5")
+;return
+;Tab & u::
+;    WindowPadMove("+1,  -1,  0.5, 0.5")
+;return
+;
+;Tab & b::
+;    WindowPadMove("-1,  +1,  0.5, 0.5")
+;return
+;Tab & n::
+;    WindowPadMove("+1,  +1,  0.5, 0.5")
+;return
 
-Tab & u:: SendInput,#5
-
-
-Tab & j:: 
-  SendInput,#{down}
-  SendInput,{Blind}{Win Up}
-return
-
-
-Tab & k::
-  SendInput,#{up}
-  SendInput,{Blind}{Win Up}
-return
+;Tab & h::
+;    WindowPadMove("-1,  +1,  0.5, 1")
+;return
+;
+;Tab & l::
+;    WindowPadMove("+1,  +1,  0.5, 1")
+;return
 
 Tab & l::
-  Sendinput #{right}
-  SendInput,{Blind}{Win Up}
+    SendInput, {Blind}#{right}
 return
+    
+
 Tab & h::
-  sendinput #{left}
-  SendInput,{Blind}{Win Up}
+    SendInput, {Blind}#{left}
 return
+
+
+
+Tab & j:: SendInput,{Blind}#{down}
+
+
+Tab & k:: SendInput,{Blind}#{up}
 
 
 
@@ -346,30 +389,30 @@ return
 !`;:: SendInput,!`;
 ::: SendInput,:
 
-`; & z::sendinput {'}
-`; & f::sendinput {\}
-`; & c::sendinput {"}
-`; & q::sendinput {_}
-`; & v::sendinput {-}
-`; & x::sendinput {+}
-`; & u::sendinput {|}
-`; & a::sendinput {!}
-`; & s::sendinput {$}
-`; & d::sendinput {=}
-`; & n::sendinput {^}
-`; & w::sendinput {?}
-`; & g::sendinput {*}
-`; & j::sendinput {#}
-`; & i::sendinput {~}
-`; & h::sendinput {&}
+`; & z::sendinput {Blind}{'}
+`; & f::sendinput {Blind}{\}
+`; & c::sendinput {Blind}{"}
+`; & q::sendinput {Blind}{_}
+`; & v::sendinput {Blind}{-}
+`; & x::sendinput {Blind}{+}
+`; & u::sendinput {Blind}{|}
+`; & a::sendinput {Blind}{!}
+`; & s::sendinput {Blind}{$}
+`; & d::sendinput {Blind}{=}
+`; & n::sendinput {Blind}{^}
+`; & w::sendinput {Blind}{?}
+`; & g::sendinput {Blind}{*}
+`; & j::sendinput {Blind}{#}
+`; & i::sendinput {Blind}{~}
+`; & h::sendinput {Blind}{&}
 `; & b::
-  Sendinput {`%}
+  Sendinput {Blind}{`%}
   sendinput {Blind}{Shift Up}
 return
-`; & y::sendinput +{F6}
-`; & Space::sendinput {``}
+`; & y::sendinput {Blind}+{F6}
+`; & Space::sendinput {Blind}{``}
 
-`; & esc::sendinput {;}
+`; & esc::sendinput {Blind}{;}
 `; & e::
 sendraw ()
 sendinput {left}
@@ -384,8 +427,8 @@ sendinput {left}
 return
 
 `; & m::
-        PostMessage, 0x50, 0, 0x4090409, , A ;切换为英文0x4090409=67699721
-        sendinput {/}
+    PostMessage, 0x50, 0, 0x4090409, , A ;切换为英文0x4090409=67699721
+    sendinput {Blind}{/}
 return
 
 
@@ -531,10 +574,9 @@ return
 
 ;获取当前鼠标下的像素颜色 
 
-
 ;切换到 webStorm
 RCtrl & a::		
-        Send, #1
+        Sendinput,#1
         sendinput {Blind}{RCtrl up}
         sendinput {Blind}{LWin up}
         sendinput {Blind}{RWin up}
@@ -543,7 +585,7 @@ return
 
 ;切换到 visual studio
 RCtrl & e::		
-        Sendinput, #5
+        Sendinput,#5
         sendinput {Blind}{RCtrl up}
         sendinput {Blind}{LWin up}
         sendinput {Blind}{RWin up}
@@ -565,7 +607,7 @@ return
 
 ;切换到 小程序开发者工具 
 RCtrl & z::
-sendinput #6
+sendinput,#6
 PostMessage, 0x50, 0, 0x4090409, , A ;切换为英文0x4090409=67699721 
 sendinput {Blind}{RCtrl up}
 sendinput {Blind}{LWin up}
@@ -574,7 +616,7 @@ return
 
 ; 切换 到 vs code
 RCtrl & v::
-sendinput #8
+sendinput,#8
 PostMessage, 0x50, 0, 0x4090409, , A ;切换为英文0x4090409=67699721 
 sendinput {Blind}{RCtrl up}
 sendinput {Blind}{LWin up}
@@ -619,7 +661,7 @@ return
 ;============================================================================================================
 ;切换到 navicat
 RCtrl & n::
-sendinput #3
+sendinput,#3
 PostMessage, 0x50, 0, 0x4090409, , A ;切换为英文0x4090409=67699721 
 sendinput {Blind}{RCtrl up}
 sendinput {Blind}{LWin up}
@@ -631,7 +673,7 @@ return
 
 ;============================================================================================================
 RCtrl & w::   ; 切换 word
-sendinput #7
+sendinput,#7
 ;sendinput #2
 PostMessage, 0x50, 0, 0x4090409, , A ;切换为英文0x4090409=67699721 
 sendinput {Blind}{RCtrl up}
@@ -656,25 +698,35 @@ return
 ;RCtrl & j::wheeldown ;鼠标滚轮向下
 ;return
 
+;在最大化和 restore 之间切换 
+RCtrl & b::
+    WinGet MX, MinMax, A
+    If MX
+        WinRestore A
+    Else WinMaximize A
+    sendinput {Blind}{RCtrl up}
+Return
+
+
 RCtrl & h::
-    sendinput ^+{tab}
+    sendinput {Blind}^+{tab}
     sendinput {Blind}{RCtrl up}
 return
 
 RCtrl & l::
-    sendinput ^{tab}
+    sendinput {Blind}^{tab}
     sendinput {Blind}{RCtrl up}
 return
 
 
 
 RCtrl & 1::
-    sendinput {f1}
+    sendinput {Blind}{f1}
     sendinput {Blind}{RCtrl up}
 return
 
 RCtrl & 2::
-    SendInput,   {f2}
+    SendInput,{f2}
     sendinput {Blind}{RCtrl up}
 return
 
@@ -715,12 +767,14 @@ RCtrl & -::send {f11}
 send {Blind}{RCtrl up}
 return
 
-RCtrl & =::send {f12}
-send {Blind}{RCtrl up}
+RCtrl & =::
+    send {f12}
+    send {Blind}{RCtrl up}
 return
 
-^Esc::send {Esc}
-send {Blind}{RCtrl up}
+^Esc::
+    send {Esc}
+    send {Blind}{RCtrl up}
 return
 
 
@@ -808,11 +862,11 @@ return
 
 #if, winactive("ahk_exe chrome.exe") || winactive("ahk_exe msedge.exe") 
 
-RCtrl & t::  ;chrome定位到 网页 栏, 只能全屏用   切换 到网页 栏 ，可以正常 使用 vimium
-    ;ControlFocus 设置输入焦点到窗口的指定控件上.
-    ;controlClick 发送鼠标按钮或鼠标滚轮事件到控件.
-   ControlClick , Chrome_RenderWidgetHostHWND1, , Chrome Legacy Window
+RCtrl & g::  ;chrome定位到 网页 栏, 只能全屏用   切换 到网页 栏 ，可以正常 使用 vimium
+   ;ControlFocus Chrome_WidgetWin_1 
+   ;ControlClick , Chrome_RenderWidgetHostHWND1, , Chrome Legacy Window
 
+ sendinput,!d{Tab}{Esc}
 send {Blind}{RCtrl up}
 
 
@@ -851,6 +905,14 @@ RCtrl & 1::
 return
 
 
+
+RCtrl & h::
+    sendinput {Blind}^{PgUp}
+return
+
+RCtrl & l::
+    sendinput {Blind}^{PgDn}
+return
 
 ;打开chrome 的 扩展面板
 RCtrl & f::
@@ -998,9 +1060,14 @@ return
 
 
 RCtrl & f:: ;停止运行 stop
-    sendinput ^,f{space}
+    sendinput {Blind}^+{n}
     sendinput {Blind}{RCtrl Up}
 Return
+
+RCtrl & g::
+    sendinput {Blind}^!{Insert}
+    sendinput {blind}{RCtrl Up}
+return
 
 RCtrl & o:: ;停止运行 stop
     send +{F5}
@@ -1017,7 +1084,7 @@ RCtrl & b:: ;调试
 Return
 
 RCtrl & Space:: ;显示该文件的所有方法 
-    send ^,m{space}
+    send {Blind}^{F12}
 Return
 RCtrl & i:: ;运行 不调试 
     send {F5}
@@ -1026,19 +1093,26 @@ Return
 
 ;上一个 选项卡 
 RCtrl & h::
-        sendinput ^!{PgUp}
+    sendinput {Blind}^+!-
     sendinput {Blind}{RCtrl Up}
     return
  ;下一个 选项卡 
-RCtrl & l:: sendinput ^!{PgDn}
+RCtrl & l:: 
+    sendinput {Blind}^+!=
+    sendinput {Blind}{RCtrl Up}
+    return
+    
+ ;下一步 
+RCtrl & j:: 
+    sendinput {F10}
     sendinput {Blind}{RCtrl Up}
     return
 
 Rctrl & r:: ;自动完成代码 
-    send ^\
-    send ^\
+    sendinput {Blind}^+{Enter}
     sendinput {Blind}{RCtrl Up}
 Return
+
 #If
 
 ;限定 vscode{{{1
@@ -1049,13 +1123,11 @@ RCtrl & f::
     sendinput {blind}{RCtrl Up}
 return
 RCtrl & l::
-    sendinput !{Right}
-    sendinput {blind}{AltUp}
+    sendinput {Blind}!{Right}
     sendinput {blind}{RCtrl Up}
 return
 RCtrl & h::
     sendinput {Blind}!{Left}
-    sendinput {blind}{AltUp}
     sendinput {blind}{RCtrl Up}
 return
 RCtrl & i::
@@ -1086,7 +1158,7 @@ return
 
 #If
 ;限定 phpstorm 和 rider 和 idea  和  webstorm  {{{1
-#if, winactive("ahk_exe phpstorm64.exe") || winactive("ahk_exe rider64.exe") || winactive("ahk_exe webstorm64.exe") || winactive("ahk_exe idea64.exe") 
+#if, winactive("ahk_exe phpstorm64.exe") || winactive("ahk_exe rider64.exe") || winactive("ahk_exe webstorm64.exe") || winactive("ahk_exe idea64.exe")|| winactive("ahk_exe studio64.exe") 
 
 Esc::
         sendinput,{Esc}
@@ -1100,6 +1172,7 @@ return
 
 
 
+
 ;`; & t:: ;由于Rider  会自动补全{} 导致 多加一个} ，所以 改下 只弄一个 { 防止补全
 ;sendraw {}
 ;sendinput {left}
@@ -1108,6 +1181,18 @@ return
 `; & t:: ;由于Rider  会自动补全{} 导致 多加一个} ，所以 改下 只弄一个 { 防止补全
 sendraw {
 return
+
+Tab & n::
+    SendInput, !+{Right}
+Return
+
+Tab & o::
+    SendInput, !+{Left}
+Return
+
+Tab & p::
+    SendInput, !+{Left}
+Return
 
 
 `; & esc::+F6
@@ -1134,6 +1219,11 @@ sendinput {Esc}A{Space}//{Space} ;注释代码
 send {Blind}{LCtrl up}
 return
 
+RAlt & g::   ;cs 生成成员 之类 的东西
+    sendinput,{Blind}!{Insert} 
+    send {Blind}{RAlt Up}
+return
+
 
 LCtrl & RShift::
 SendInput ^/ ;注释代码 
@@ -1143,10 +1233,8 @@ return
 ;寻找任意文件  
 
 RCtrl & f::
-    sendinput,^+n 
+    sendinput,{Blind}^+n 
     sendinput,{Blind}{RCtrl up}
-    sendinput,{Blind}{Win Up}
-    sendinput,{Blind}{Shift up}
 return
 
 
