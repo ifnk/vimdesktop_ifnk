@@ -242,7 +242,8 @@
     vim.map("r", "<cm_RenameOnly>", "TTOTAL_CMD")
     vim.map("R", "<cm_MultiRenameFiles>", "TTOTAL_CMD")
     vim.map("x", "<cm_Delete>", "TTOTAL_CMD")
-    vim.map("X", "<TC_ForceDelete>", "TTOTAL_CMD")
+    ;vim.map("X", "<TC_ForceDelete>", "TTOTAL_CMD")
+    vim.map("X", "<cm_OpenRecycled>", "TTOTAL_CMD")
     vim.map("w", "<cm_List>", "TTOTAL_CMD")
     vim.map("y", "<cm_CopyNamesToClip>", "TTOTAL_CMD")
     vim.map("Y", "<cm_CopyFullNamesToClip>", "TTOTAL_CMD")
@@ -310,6 +311,7 @@
     vim.map("vd", "<cm_CompareDirs>", "TTOTAL_CMD")
     vim.map("vs", "<cm_CompareDirsWithSubdirs>", "TTOTAL_CMD")
     vim.map("vc", "<cm_MatchSrc>", "TTOTAL_CMD")
+    vim.map("ve", "<cm_SelectCurrentExtension>", "TTOTAL_CMD")
 
     ;vim.map("v", "<cm_SrcCustomViewMenu>", "TTOTAL_CMD")
     vim.map("Vb", "<cm_VisButtonbar>", "TTOTAL_CMD")

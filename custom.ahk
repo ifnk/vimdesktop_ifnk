@@ -1,73 +1,61 @@
+Coordmode, Mouse, Screen
+
+toggle() {
+ static t
+ Return, ( t := !t)
+}
+
+RemoveToolTip:
+  ToolTip
+return
 ; LAlt 相关快捷键 {{{1
 LAlt & Enter::
   sendinput,!{Enter}
   sendinput {Blind}{LAlt up}
   sendinput {Blind}{RAlt up}
 Return  
-; win 相关快捷键 {{{1
-;======================================================
-;#if Not WinGet_A_MinMax() ;当前窗口既不处于最小化状态也不处于最大化状态时以下热键才可用.
-;#k:: ;向上
-;#j:: ;向下
-;#h:: ;向左
-;#l:: ;向右
-;	WinGetPos,PosX,PosY,,,A
-;	if (instr(A_ThisHotkey,"k"))
-;		WinMove,A,,,% PosY-500  ;这个2是移动距离
-;	if (instr(A_ThisHotkey,"j"))
-;		WinMove,A,,,% PosY+500
-;	if (instr(A_ThisHotkey,"h"))
-;		WinMove,A,,% Posx-500
-;	if (instr(A_ThisHotkey,"l"))
-;		WinMove,A,,% Posx+500
-;return
-;WinGet_A_MinMax() {
-;; 返回0 窗口既不处于最小化状态也不处于最大化状态.
-;;-1: 窗口处于最小化状态
-;;1: 窗口处于最大化状态
-;	WinGet,MinOrMax,MinMax,A
-;	return %MinOrMax%
-;}
 
-;#x::
-;    sendinput ^F4
-;return
-;
+
+; win 相关快捷键 {{{1
 #c::Winclose,A
 <#o::SendInput,{Blind}^#{F4}
 >#d::SendInput,{Blind}^#d
-;;#c::WinClose,A
-;;#m::WinMaximize,A
 #n::WinMinimize,A
-;
-;
-;#k:: WindowPadMove("0, -1, 1.0, 0.5")
-;
-;#j:: WindowPadMove("0, +1, 1.0, 0.5")
-
 #j::sendinput,{Blind}#{down}
 #k::sendinput,{Blind}#{up}
 #+l::SendInput, {Blind}#+{Right}
 #+h::SendInput, {Blind}#+{Left}
 ;将焦点聚焦到左边的窗口
-#y::
-    MouseMove, 480, 270,0
+;#y::
+;  Reload
+;return 
+;将焦点聚焦到左边的窗口
+#\::
+    MouseMove, 2400, 540,0
     MouseGetPos,,, hwnd 
     WinActivate, ahk_id %hwnd%
 return 
-;将焦点聚焦到左边的窗口
-#h::
-    MouseMove, 480, 540,0
+;将焦点聚焦到右边的屏幕
+#`;::
+    MouseMove, 2400, 540,0
     MouseGetPos,,, hwnd 
     WinActivate, ahk_id %hwnd%
 return 
 
-;将焦点聚焦到右边的窗口
+;将焦点往右循环切换 
 #l::
     MouseMove, 1440, 540,0
     MouseGetPos,,, hwnd 
     WinActivate, ahk_id %hwnd%
-return 
+return
+
+#h::
+    MouseMove, 480, 540,0
+    MouseGetPos,,, hwnd 
+    WinActivate, ahk_id %hwnd%
+return
+
+
 
 #u::
     MouseMove, 1440, 270,0
@@ -127,6 +115,36 @@ Return
 ;LCtrl 相关快捷键临时{{{1
 ;<^h::SendInput #5
 ;<^l::SendInput #1
+;单按Capslock切换大小写状态
+^\::
+  if(toggle()){
+    MouseMove, 2400, 540,0
+    ToolTip, 3
+    MouseGetPos,,, hwnd 
+    WinActivate, ahk_id %hwnd%
+  }else{
+    MouseMove, 3360, 540,0
+    ToolTip, 4
+    MouseGetPos,,, hwnd 
+    WinActivate, ahk_id %hwnd%
+  }
+  SetTimer, RemoveToolTip, -1000
+return
+
+LCtrl & space::
+  if(toggle()){
+    MouseMove, 480, 540,0
+    ToolTip, 1
+    MouseGetPos,,, hwnd 
+    WinActivate, ahk_id %hwnd%
+  }else{
+    MouseMove, 1400, 540,0
+    ToolTip, 2
+    MouseGetPos,,, hwnd 
+    WinActivate, ahk_id %hwnd%
+  }
+  SetTimer, RemoveToolTip, -1000
+return
 
 ;tab相关快捷键{{{1
  ;======================================================
@@ -175,6 +193,21 @@ Tab & i:: SendInput,{Blind}#1
 ;    WindowPadMove("+1,  +1,  0.5, 0.5")
 ;return
 
+;将焦点聚焦到右边的屏幕
+Tab & b::
+    MouseMove, 2400, 540,0
+    MouseGetPos,,, hwnd 
+    WinActivate, ahk_id %hwnd%
+return 
+
+;将焦点聚焦到右边的窗口
+Tab & m::
+    MouseMove, 1440, 540,0
+    MouseGetPos,,, hwnd 
+    WinActivate, ahk_id %hwnd%
+return 
+
+
 ;Tab & h::
 ;    WindowPadMove("-1,  +1,  0.5, 1")
 ;return
@@ -216,7 +249,9 @@ Escape & l:: SendInput,{Blind}{Right}
 Escape & f:: SendInput,{Backspace}
 Escape & d:: SendInput,{Delete}
 
-Escape & y:: send,{AppsKey}
+Escape & y::
+  SendInput,{AppsKey}
+return
 
 
 Esc & u::shiftalttab
@@ -240,15 +275,11 @@ return
 
 
 
-Esc & ,:: (
-Esc & .:: )
+;Esc & ,:: (
+;Esc & .:: )
 Esc & Enter:: Delete
 
-Esc & c::WinClose,A
-Esc & o::[
-Esc & p::]
-Esc & n::{
-Esc & m::}
+
 Esc & /::Send ^/
 
 
@@ -383,54 +414,114 @@ return
 ;恢复分号自身功能
 ;$`;:: SendInput,`;
 `;:: SendInput,`;
-#`;:: SendInput,#`;
+;#`;:: SendInput,#`;
 ^`;:: SendInput,^`;
 ^+`;:: SendInput,^+`;
 !`;:: SendInput,!`;
 ::: SendInput,:
 
-`; & z::sendinput {Blind}{'}
-`; & f::sendinput {Blind}{\}
-`; & c::sendinput {Blind}{"}
-`; & q::sendinput {Blind}{_}
-`; & v::sendinput {Blind}{-}
-`; & x::sendinput {Blind}{+}
-`; & u::sendinput {Blind}{|}
-`; & a::sendinput {Blind}{!}
-`; & s::sendinput {Blind}{$}
-`; & d::sendinput {Blind}{=}
-`; & n::sendinput {Blind}{^}
-`; & w::sendinput {Blind}{?}
-`; & g::sendinput {Blind}{*}
-`; & j::sendinput {Blind}{#}
-`; & i::sendinput {Blind}{~}
-`; & h::sendinput {Blind}{&}
-`; & b::
+`; & z::
+  sendinput {Blind}{'}
+  return
+`; & f::
+  sendinput {Blind}{\}
+  return
+`; & c::
+  sendinput {Blind}{"}
+  sendinput {Blind}{Shift Up}
+  return
+`; & q::
+  sendinput {Blind}{_}
+  sendinput {Blind}{Shift Up}
+  return
+`; & v::
+  sendinput {Blind}{-}
+  return
+`; & x::
+  sendinput {Blind}{+}
+  sendinput {Blind}{Shift Up}
+  return
+`; & u::
+  sendinput {Blind}{|}
+  sendinput {Blind}{Shift Up}
+  return
+`; & e::
+  sendinput {Blind}{(}
+  sendinput {Blind}{Shift Up}
+  return
+`; & r::
+  sendinput {Blind}{)}
+  sendinput {Blind}{Shift Up}
+  return
+`; & 1::
+  sendinput {Blind}{[}
+  return
+`; & 2::
+  sendinput {Blind}{]}
+  return
+`; & t::
+  sendinput {Blind}{`{}
+  return
+`; & y::
+  sendinput {Blind}{`}}
+  sendinput {Blind}{Shift Up}
+  return
+`; & a::
+  sendinput {Blind}{!}
+  sendinput {Blind}{Shift Up}
+  return
+`; & s::
+  sendinput {Blind}{$}
+  sendinput {Blind}{Shift Up}
+  return
+`; & d::
+  sendinput {Blind}{=}
+  return
+`; & n::
+  sendinput {Blind}{^}
+  sendinput {Blind}{Shift Up}
+  return
+`; & w::
+  sendinput {Blind}{?}
+  sendinput {Blind}{Shift Up}
+  return
+`; & g::
+  sendinput {Blind}{*}
+  sendinput {Blind}{Shift Up}
+  return
+`; & j::
+  sendinput {Blind}{#}
+  sendinput {Blind}{Shift Up}
+  return
+`; & i::
+  sendinput {Blind}{~}
+  sendinput {Blind}{Shift Up}
+  return
+`; & h::
+  sendinput {Blind}{&}
+  sendinput {Blind}{Shift Up}
+  return
+`; & b:: 
   Sendinput {Blind}{`%}
   sendinput {Blind}{Shift Up}
 return
-`; & y::sendinput {Blind}+{F6}
 `; & Space::sendinput {Blind}{``}
 
 `; & esc::sendinput {Blind}{;}
-`; & e::
-sendraw ()
-sendinput {left}
-return
-`; & r::
-sendraw []
-sendinput {left}
-return
-`; & t::
-sendraw {}
-sendinput {left}
-return
+;`; & r::
+;sendraw [] 
+;sendinput {left}
+;return 
+;`; & t::
+;sendraw {} 
+;sendinput {left}
+;return 
 
-`; & m::
+`; & m:: 
     PostMessage, 0x50, 0, 0x4090409, , A ;切换为英文0x4090409=67699721
     sendinput {Blind}{/}
 return
-
+ 
 
 
 
@@ -444,7 +535,7 @@ return
 ;^`::SendInput,^``
 ;!`::SendInput,!``
 ;+!`::SendInput,+!``
-;
+
 ;` & 1:: SendInput,^x
 ;` & 2:: SendInput,^c
 ;` & 3:: SendInput,^v
@@ -781,7 +872,7 @@ return
 
 
 ;限定 ahk 中文帮助{{{1
-#IfWinActive AutoHotkey 中文帮助 ;chrome devtools 开发者工具   相关快捷键
+#IfWinActive AutoHotkey 中文帮助 ;devtools 开发者工具   相关快捷键
 
 RCtrl & h::  ;后退
 ControlClick , Internet Explorer_Server1 , , , , ClickCount, NA x324 y17
@@ -850,6 +941,11 @@ RCtrl & j::
 send {Blind}{RCtrl up}
 return
 
+RCtrl & x::
+    SendInput {Blind}^w ;鼠标滚轮向下
+    SendInput {Blind}{RCtrl up}
+return
+
 #if
 
 
@@ -861,6 +957,11 @@ return
 ;限定 chrome 和 edge{{{1
 
 #if, winactive("ahk_exe chrome.exe") || winactive("ahk_exe msedge.exe") 
+
+RCtrl & x::  ;后退
+    Sendinput {Blind}^w 
+    sendinput {Blind}{RCtrl up}
+Return
 
 RCtrl & g::  ;chrome定位到 网页 栏, 只能全屏用   切换 到网页 栏 ，可以正常 使用 vimium
    ;ControlFocus Chrome_WidgetWin_1 
@@ -1026,6 +1127,9 @@ return
 ;限定 visual studio {{{1
 #IfWinActive  ahk_exe devenv.exe	;visual studio 相关快捷键
 
+`; & t:: ;由于Visual   会自动补全{} 导致 多加一个} ，所以 改下 只弄一个 { 防止补全
+sendraw {
+return
 
 
 LCtrl & `;::   ;phpstorm快速单行注释
@@ -1038,12 +1142,12 @@ return
 
 ; esc 以后 将 输入法切换 成 英文 的
 Esc::
-PostMessage, 0x50, 0, 0x4090409, , A ;切换为英文0x4090409=67699721 
-send {Esc}{Esc}
+  PostMessage, 0x50, 0, 0x4090409, , A ;切换为英文0x4090409=67699721 
+  SendInput {Esc}
 return
 
 `; & esc::
-send {F2} ;关闭多余的选项卡
+  sendinput {Blind}{F2} 
 return
 ;关闭多余的选项卡
 `; & tab::
@@ -1058,15 +1162,23 @@ return
 ;sendinput {Blind}{RWin up}
 ;return
 
-
-RCtrl & f:: ;停止运行 stop
-    sendinput {Blind}^+{n}
+RCtrl & x:: ;停止运行 stop
+    sendinput {Blind}^{F4} 
     sendinput {Blind}{RCtrl Up}
 Return
 
-RCtrl & g::
-    sendinput {Blind}^!{Insert}
-    sendinput {blind}{RCtrl Up}
+RCtrl & f:: ;停止运行 stop
+    sendinput ^,f{Space}
+    sendinput {Blind}{RCtrl Up}
+Return
+RCtrl & r:: ;重新来过 restart
+    sendinput {Blind}^+{F5}
+    sendinput {Blind}{RCtrl Up}
+Return
+
+RCtrl & d::
+    sendinput +{F7}
+    sendinput {Blind}{RCtrl Up}
 return
 
 RCtrl & o:: ;停止运行 stop
@@ -1078,13 +1190,10 @@ RCtrl & m:: ;错误列表
     send ^\e
     sendinput {Blind}{RCtrl Up}
 Return
-RCtrl & b:: ;调试 
-    send ^{F12}
-    sendinput {Blind}{RCtrl Up}
-Return
 
 RCtrl & Space:: ;显示该文件的所有方法 
-    send {Blind}^{F12}
+    sendinput ^,m{Space}
+    sendinput {Blind}{RCtrl Up}
 Return
 RCtrl & i:: ;运行 不调试 
     send {F5}
@@ -1093,25 +1202,21 @@ Return
 
 ;上一个 选项卡 
 RCtrl & h::
-    sendinput {Blind}^+!-
+    sendinput {Blind}^!{PgUp}
     sendinput {Blind}{RCtrl Up}
     return
  ;下一个 选项卡 
 RCtrl & l:: 
-    sendinput {Blind}^+!=
+    sendinput {Blind}^!{PgDn}
     sendinput {Blind}{RCtrl Up}
     return
     
  ;下一步 
 RCtrl & j:: 
-    sendinput {F10}
+    sendinput {F11}
     sendinput {Blind}{RCtrl Up}
     return
 
-Rctrl & r:: ;自动完成代码 
-    sendinput {Blind}^+{Enter}
-    sendinput {Blind}{RCtrl Up}
-Return
 
 #If
 
@@ -1182,9 +1287,6 @@ return
 sendraw {
 return
 
-Tab & n::
-    SendInput, !+{Right}
-Return
 
 Tab & o::
     SendInput, !+{Left}
@@ -1239,12 +1341,17 @@ return
 
 
 
+;RCtrl & r:: ;自动完成代码 
+;send,+^{enter}
+;send,{Esc}
+;send {Blind}{RCtrl up}
+;send {Blind}{LWin up}
+;send {Blind}{RWin up}
+;return
+
 RCtrl & r:: ;自动完成代码 
-send,+^{enter}
-send,{Esc}
-send {Blind}{RCtrl up}
-send {Blind}{LWin up}
-send {Blind}{RWin up}
+  SendInput {Blind}+{F9}
+  SendInput {Blind}{RCtrl up}
 return
 
 
@@ -1285,6 +1392,10 @@ RCtrl & l::
 
 RCtrl & h:: 
     SendInput,{Blind}!{left}
+    Return
+
+RCtrl & x:: 
+    SendInput,{Blind}^{F4}
     Return
 
 RCtrl & space:: ^F12 
