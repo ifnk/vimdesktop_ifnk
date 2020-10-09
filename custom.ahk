@@ -239,7 +239,11 @@ Tab & k:: SendInput,{Blind}#{up}
 ;Esc相关快捷键{{{1
  ;======================================================
 
-Esc::SendInput,{Escape} 
+
+Esc::
+  PostMessage, 0x50, 0, 0x4090409, , A ;切换为英文0x4090409=67699721 
+  SendInput {Esc}
+return
 ;$Esc::Send {Esc}
 Escape & j:: SendInput,{Blind}{Down}
 Escape & k:: SendInput,{Blind}{Up}
@@ -642,10 +646,18 @@ return
 ;通过按键切换 输入法
 
 
-
-LCtrl:: ;左Ctrl  切换 成中文 输入法
+LCtrl:: ;  scrolllock  切换 成中文 输入法
+  ;先切英文在切中文 
+    PostMessage, 0x50, 0, 0x4090409, , A 
     PostMessage, 0x50, , 0x8040804,, A ;切换到中文输入法
 return
+
+Scrolllock:: ;  scrolllock  切换 成中文 输入法
+  ;先切英文在切中文 
+    PostMessage, 0x50, 0, 0x4090409, , A 
+    PostMessage, 0x50, , 0x8040804,, A ;切换到中文输入法
+return
+
 
 RCtrl:: ;右Ctrl  切换 成英文 输入法
 ;send {shift down}{alt down}{shift up}{alt up}
@@ -1444,23 +1456,39 @@ return
 ;    return
 
 RCtrl & l::
-        sendinput,gt
+      Sendinput,gt
+      SendInput,{Blind}{RCtrl up}
 return
 
 RCtrl & h::
-        SendInput,gT
+      SendInput,gT
+      SendInput,{Blind}{RCtrl up}
 return
 
-RCtrl & i:: sendinput,{F5}
+RCtrl & i::
+  sendinput,{F5}
+  SendInput,{Blind}{RCtrl up}
+return
 
 
-RCtrl & o:: sendinput,{F4}
+RCtrl & o::
+  sendinput,{F4}
+  SendInput,{Blind}{RCtrl up}
+return
 
-^!l:: sendinput {F3}
+^!l::
+  sendinput {F3}
+  SendInput,{Blind}{RCtrl up}
+return
+
+
 
 ;保存退出 一个文件  相当于 ctrl + F4
 
-RCtrl & x:: SendInput :q {Enter}
+RCtrl & x::
+  SendInput :q {Enter}
+  SendInput,{Blind}{RCtrl up}
+return
 
 #if
 
@@ -1520,7 +1548,7 @@ send,+^!b
 return
 f1::send n
 space & q::
-send,+^{f7}
+send,+^
 Return
 space & `::
 send,!{delete}
